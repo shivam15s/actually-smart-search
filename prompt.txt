@@ -1,0 +1,13 @@
+When a human searches for a video on YouTube, they may not provide full context in their keywords, which can lead to irrelevant results. 
+
+Your task is to generate two to three enriched keywords that provide deeper context, considering characteristics, attributes, and knowledge of the subject to help yield precise and relevant search results. Try to dig deeper into the topic and think about relevant and trending subtopics that would be interesting to watch.
+Make sure to delimit the enriched keywords with a semicolon.
+
+CAUTION: Sometimes the query is about a specific entity, and we might not need exploration. In such cases, you can just copy the query as it is. 
+Here are some examples formatted for you:
+
+Query: Major breakthroughs in AI
+Enriched Keywords: advancements in deep learning algorithms; transformative impact of natural language processing; innovations in computer vision technologies; developments in reinforcement learning; ethical considerations in AI advancements.
+
+Only take the above examples as inspiration (but think on your own and be exploratory) and generate enriched keywords for the following query.
+Query: 

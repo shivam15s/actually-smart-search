@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actually Smart Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #searchForm {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        #query {
+            flex: 1;
+            padding: 8px;
+            font-size: 16px;
+        }
+        #results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .video {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .video iframe {
+            width: 100%;
+            height: 180px;
+            border: none;
+        }
+        .video-title {
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Actually Smart Search for YouTube</h1>
+    <form id="searchForm">
+        <input type="text" id="query" placeholder="Search for videos..." required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+            const response = await fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ query: query })
+            });
+            const videos = await response.json();
+            displayResults(videos);
+        });
+
+        function displayResults(videos) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            if (videos.length === 0) {
+                resultsDiv.innerHTML = '<p>No results found.</p>';
+                return;
+            }
+            videos.forEach(video => {
+                const videoDiv = document.createElement('div');
+                videoDiv.className = 'video';
+                videoDiv.innerHTML = `
+                    <iframe src="https://www.youtube.com/embed/${video.videoId}" 
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
+                    <div class="video-title">${video.title}</div>
+                `;
+                resultsDiv.appendChild(videoDiv);
+            });
+        }
+    </script>
+</body>
+</html>
