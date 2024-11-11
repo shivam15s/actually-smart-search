@@ -8,5 +8,8 @@ Imagine YouTube search that understands you. Not just keywords—your real quest
 
 ![demo](_images/demo1.png)
 
-
-
+## How to use:
+- Clone the repository
+- Add your own YouTube and OpenAI API keys
+https://github.com/shivam15s/actually-smart-search/blob/d520b153eec30d19cd5836d932e219355d96cd2f/app.py#L11-L12
+- Run `python app.py` and experience a smarter YouTube search
