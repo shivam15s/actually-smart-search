@@ -4,12 +4,17 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from openai import OpenAI
 # from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Pool, Manager
+import json
 
 
 app = Flask(__name__)
 
-API_KEY = ""
-CHATGPT_API_KEY = ""
+# load api keys from keys.json
+with open('keys.json') as f:
+    keys = json.load(f)
+    YT_API_KEY = keys['YT_API_KEY']
+    CHATGPT_API_KEY = keys['CHATGPT_API_KEY']
+
 client = OpenAI(api_key=CHATGPT_API_KEY)
 
 def fetch_video_data(args):
@@ -32,7 +37,7 @@ def search_youtube(query, max_results=5, orig_query=None):
         'q': query,
         'type': 'video',
         'maxResults': max_results,
-        'key': API_KEY
+        'key': YT_API_KEY
     }
     print("Query:", query)
     response = requests.get(url, params=params)
@@ -107,7 +112,7 @@ def refine_query_with_chatgpt(query):
     prompt += f"{query}\nEnriched Keywords: "
 
     completion = client.chat.completions.create(
-        model="o1-mini",
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "user",
@@ -124,7 +129,7 @@ def get_comments(video_id, max_comments=5):
         'part': 'snippet',
         'videoId': video_id,
         'maxResults': max_comments,
-        'key': API_KEY
+        'key': YT_API_KEY
     }
     
     response = requests.get(url, params=params)
@@ -142,7 +147,7 @@ def get_view_count(video_id):
     params = {
         'part': 'statistics',
         'id': video_id,
-        'key': API_KEY
+        'key': YT_API_KEY
     }
     
     response = requests.get(url, params=params)
